@@ -46,32 +46,28 @@ Tech Stack:
 
 Project Structure:
 ->AI-Study-Assistant/
-  │
-  ├── static/
-  │   ├── css/
-  │   ├── js/
-  │   └── images/
-  │
-  ├── templates/
-  │   ├── base.html
-  │   ├── dashboard.html
-  │   ├── generate_notes.html
-  │   ├── saved_notes.html
-  │   ├── ask_doubt.html
-  │   ├── quiz.html
-  │   ├── planner.html
-  │   └── ...
-  │
-  ├── models.py
-  ├── app.py
-  |__ config.py
-  ├── services/
-  │   └── gemini_services.py
-  |   |___ pdf_service.py
-  │
-  ├── .env
-  ├── .gitignore
-  └── README.md
+    static/
+          css/
+          js/
+          images/
+    templates/
+          base.html
+          dashboard.html
+          generate_notes.html
+          saved_notes.html
+          ask_doubt.html
+          quiz.html
+          planner.html
+          ...
+    models.py
+    app.py
+    config.py
+    services/
+         gemini_services.py
+         pdf_service.py
+    .env
+    .gitignore
+    README.md
 
 Environment Variables:
 *GEMINI_API_KEY => API key of Google Gemini AI
