@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container fade-in">
+
+    <!-- Dashboard Welcome Section -->
+    <div class="dashboard-header fade-in">
+        <h1>Welcome back, {{ username }} 👋</h1>
+        <p>Ready to continue your learning journey?</p>
+    </div>
+
+    <!-- Dashboard Stats Section -->
+    <div class="stats-grid fade-in">
+        <div class="stat-card fade-in">
+            <h3>Notes Created</h3>
+            <h2> {{ notes_count or 0 }} </h2>
+        </div>
+        <div class="stat-card fade-in">
+            <h3>Quizzes Taken</h3>
+            <h2> {{ quiz_count or 0 }} </h2>
+        </div>
+        <div class="stat-card fade-in">
+            <h3>Study Hours</h3>
+            <h2> {{ study_hours or 0 }} hrs </h2>
+        </div>
+    </div>
+
+    <!-- Dashboard Tools Section -->
+    <h2 style="margin-left:10px; margin-bottom:20px;">Study Tools</h2>
+    <div class="tools-grid fade-in">
+        <a href="/pdf_to_notes" class="card fade-in">
+            <img src="{{ url_for('static', filename='images/d-pdf.png') }}" alt="pdf to notes">
+            <h3>PDF to Notes</h3>
+            <p>Convert your PDFs into structures notes.</p>
+            <h4>Open Tool &xrarr;</h4>
+        </a>
+        <a href="/ask_doubts" class="card fade-in">
+            <img src="{{ url_for('static', filename='images/d-questions.png') }}" alt="ask doubts">
+            <h3>Ask Doubts</h3>
+            <p>Get instant answers from AI.</p>
+            <h4>Open Tool &xrarr;</h4>
+        </a>
+        <a href="/generate_notes" class="card fade-in">
+            <img src="{{ url_for('static', filename='images/d-notes.png') }}" alt="generate notes">
+            <h3>Generate Notes</h3>
+            <p>Create AI-powered Study Notes.</p>
+            <h4>Open Tool &xrarr;</h4>
+        </a>
+        <a href="/quiz" class="card fade-in">
+            <img src="{{ url_for('static', filename='images/d-quiz.png') }}" alt="take quiz">
+            <h3>Take Quiz</h3>
+            <p>Test your knowledge instantly.</p>
+            <h4>Open Tool &xrarr;</h4>
+        </a>
+        <a href="/study_planner" class="card fade-in">
+            <img src="{{ url_for('static', filename='images/d-calendar.png') }}" alt="study planner">
+            <h3>Study Planner</h3>
+            <p>Organize your study schedule.</p>
+            <h4>Open Tool &xrarr;</h4>
+        </a>
+        <a href="/saved_notes" class="card fade-in">
+            <img src="{{ url_for('static', filename='images/d-save.png') }}" alt="saved notes">
+            <h3>Saved Notes</h3>
+            <p>Access all your saved notes.</p>
+            <h4>Open Tool &xrarr;</h4>
+        </a>
+    </div>
+
+    <div class="recent-activity fade-in">
+
+        <h3>Recent Activity</h3>
+
+        {% if activities %}
+
+        <div class="activity-list fade-in">
+
+            {% for act in activities %}
+
+            <div class="activity-item">
+
+                <div class="activity-text">
+                    {{ act.action }}
+                </div>
+
+                <div class="activity-time">
+                    {{ act.local_time.strftime("%d %b %H:%M") }}
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <p>No recent activity</p>
+
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

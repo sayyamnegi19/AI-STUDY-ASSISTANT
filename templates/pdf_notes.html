@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container pdf-page fade-in">
+
+    <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+
+    <div class="pdf-header fade-in">
+        <h2>PDF to AI Notes</h2>
+        <p>Upload your study material and convert it into structured AI notes.</p>
+    </div>
+
+    <div class="pdf-upload-card fade-in">
+
+        <form method="POST" enctype="multipart/form-data" class="pdf-upload-form">
+
+            <input type="hidden" name="action" value="generate">
+            
+            <label class="upload-box">
+                <input id="pdf-input" type="file" name="pdf_file" accept=".pdf" required>
+
+                <div class="upload-content">
+                    <div class="upload-icon">📄</div>
+
+                    <p class="upload-title">
+                        <strong>Click to upload PDF</strong>
+                    </p>
+
+                    <span id="file-name">No file selected</span>
+                </div>
+            </label>
+
+            <button class="btn-primary generate-btn">
+                Generate Notes
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if generated_notes %}
+
+    <div class="notes-result-card fade-in">
+
+        <div class="notes-result-header">
+            <h3>Generated Notes</h3>
+        </div>
+
+        <div class="notes-preview">
+            {{ generated_notes | safe }}
+        </div>
+
+        <form method="POST" class="save-notes-form">
+
+            <input type="hidden" name="action" value="save">
+            <input type="hidden" name="topic" value="{{ topic }}">
+            <textarea name="content" hidden>{{ generated_notes }}</textarea>
+
+            <button class="btn-primary save-btn btn-loading">
+                <span class="btn-text">Save Notes</span>
+                <span class="btn-loader"></span>
+            </button>
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
