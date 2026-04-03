@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container fade-in">
+
+    <a href="/saved_notes" class="back-btn">← Back to Notes</a>
+
+    <div class="note-full">
+        <h2>{{ note.title }}</h2>
+        <p class="note-date">{{ note.local_time.strftime("%d %b %H:%M") }}</p>
+
+        <div class="note-content">
+            {{ note.rendered_content | safe }}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

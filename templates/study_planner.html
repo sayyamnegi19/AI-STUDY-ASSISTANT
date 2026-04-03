@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="planner-wrapper fade-in">
+
+    <a href="/dashboard" class="back-btn">← Dashboard</a>
+
+    <div class="planner-layout fade-in">
+
+        <!-- LEFT: ADD TASK -->
+        <div class="planner-left fade-in">
+
+            <div class="planner-form-card fade-in">
+                <h3>Add New Task</h3>
+
+                <form method="POST" id="planner-form" class="planner-form">
+
+                    <input type="text" name="title" placeholder="Task title" required>
+
+                    <textarea name="description" placeholder="Description"></textarea>
+
+                    <input type="date" name="deadline">
+
+                    <button class="btn-primary">Add Task</button>
+
+                </form>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT: TASKS -->
+        <div class="planner-right fade-in">
+
+            <div class="planner-header fade-in">
+                <h2>Your Tasks</h2>
+                <span class="task-count">{{ tasks|length }} Tasks</span>
+            </div>
+
+            {% if tasks %}
+
+            <div class="task-list fade-in">
+
+                {% for task in tasks %}
+
+                <div class="task-card {% if task.status == 'completed' %}completed{% endif %}">
+
+                    <div class="task-top">
+
+                        <h4>{{ task.title }}</h4>
+
+                        <span class="task-status {% if task.status == 'completed' %}completed{% endif %}">
+                            {{ task.status }}
+                        </span>
+
+                    </div>
+
+                    <p class="task-desc">
+                        {{ task.description or "No description" }}
+                    </p>
+
+                    <div class="task-footer">
+
+                        <span class="task-date">
+                            📅 {{ task.deadline if task.deadline else "No deadline" }}
+                        </span>
+
+                        <div class="task-actions">
+
+                            {% if task.status != "completed" %}
+                            <a href="/task_complete/{{ task.id }}" class="complete-btn">✔</a>
+                            {% endif %}
+
+                            <a href="/delete_task/{{ task.id }}" class="delete-btn">✖</a>
+
+                        </div>  
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state fade-in">
+                <h3>No tasks yet</h3>
+                <p>Start by adding your first study task.</p>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

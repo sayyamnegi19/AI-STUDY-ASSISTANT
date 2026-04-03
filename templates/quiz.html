@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container quiz-page fade-in">
+
+    <a href="/dashboard" class="back-btn">← Back to Dashboard</a>
+
+    <div class="quiz-header fade-in">
+        <h2>AI Quiz Generator</h2>
+        <p>Test your knowledge with AI-generated questions.</p>
+    </div>
+
+
+    <!-- Topic Input -->
+
+    <div class="quiz-topic-card fade-in">
+
+        <form method="POST" class="quiz-topic-form">
+
+            <input type="hidden" name="action" value="generate">
+
+            <input type="text" name="topic" placeholder="Enter topic (example: Operating System)" required>
+
+            <button class="btn-primary btn-loading" data-type="quiz">
+                <span class="btn-text">Generate Quiz</span>
+                <span class="btn-loader"></span>
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if quiz_data %}
+
+    <form method="POST" class="quiz-form fade-in">
+
+        <input type="hidden" name="action" value="submit">
+
+        {% for q in quiz_data %}
+        {% set q_index = loop.index0 %}
+        <div class="quiz-card">
+
+            <h3 class="quiz-question">
+                {{ loop.index }}. {{ q.question }}
+            </h3>
+
+            <div class="quiz-options">
+
+                {% for option in q.options %}
+
+                <label class="quiz-option">
+
+                    <input type="radio" name="q{{ q_index }}" value="{{ option }}" required>
+
+                    <span>{{ option }}</span>
+
+                </label>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        <button class="btn-primary submit-quiz">
+            Submit Quiz
+        </button>
+
+    </form>
+
+    {% endif %}
+
+
+    {% if score is not none %}
+
+    <div class="quiz-result">
+
+        <h3>Your Score</h3>
+
+        <div class="score-value">
+            {{ score }}/{{ quiz_data|length }}
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% if score is not none %}
+
+<div id="scoreModal" class="quiz-modal">
+
+    <div class="quiz-modal-content">
+
+        <h2>Quiz Completed 🎉</h2>
+
+        <p class="quiz-score-text">
+            Your Score
+        </p>
+
+        <div class="quiz-score-value">
+            {{ score }}/{{ quiz_data|length }}
+        </div>
+
+        <div class="quiz-modal-buttons">
+
+            <a href="/dashboard" class="btn-primary">
+                Back to Dashboard
+            </a>
+
+            <a href="/quiz" class="btn-primary">
+                Take Another Quiz
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

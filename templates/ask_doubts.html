@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="ask-page fade-in">
+
+    <div class="ask-page-header fade-in">
+        <a href="/dashboard" class="back-btn">← Dashboard</a>
+        <h2>Ask AI Doubts</h2>
+    </div>
+
+    <div class="messages chat-messages fade-in" id="chat-messages">
+
+        {% if chat_history %}
+
+            {% for chat in chat_history %}
+
+                <div class="message user-message">
+                    <div class="message-inner">
+                        {{ chat.question }}
+                    </div>
+                </div>
+
+                <div class="message ai-message">
+                    <div class="message-inner">
+                        {{ chat.answer | safe }}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="chat-empty">
+                <h3>Ask anything about your studies</h3>
+                <p>Start the conversation with your AI tutor.</p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <form method="POST" class="chat-input-form message-input fade-in">
+
+        <textarea
+            name="question"
+            placeholder="Ask your question..."
+            required
+        ></textarea>
+
+        <button class="btn-primary btn-loading" data-type="chat" type="submit">
+            <span class="btn-text">Send</span>
+            <span class="btn-loader"></span>
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

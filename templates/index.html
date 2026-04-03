@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %} AI Study Assistant {% endblock %}
+{% block content %}
+    <section class="hero fade-in">
+
+        <img src="{{ url_for('static', filename='images/logo2.png') }}" alt="AI Study Assistant Logo">
+        <h1>Your Personal AI Study Companion</h1>
+        <p>Transform the way you learn with our intelligent study tools. Convert PDFs, ask questions, Generate Notes, and plan your studies - all in one place.</p>
+        {% if session.get('user_id') %}
+            <a href="/dashboard" class="btn-primary">Go to Dashboard</a>
+        {% else %}
+            <a href="#" onclick="openModal()" class="btn-primary">Start Learning Free</a>
+        {% endif %}
+        
+
+        <h2>Powerful Features For Smart Learning</h2>
+        <p>Everything you need to excel in your studies</p>
+
+            <section class="features fade-in">
+                <div class="card fade-in">
+                    <div class="feature-logo">
+                        <img src="{{ url_for('static', filename='images/pdf.png') }}" alt="PDF Logo">
+                    </div>
+                    PDF to Notes
+                    <p class="card-para">Convert your PDF documents into structured, easy-to-read notes instantly.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="feature-logo">
+                        <img src="{{ url_for('static', filename='images/question.png') }}" alt="Ask Doubts Logo">
+                    </div>
+                    Ask Doubts to AI
+                    <p class="card-para">Get instant answers to your questions from our advanced AI assistant.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="feature-logo">
+                        <img src="{{ url_for('static', filename='images/notes.png') }}" alt="Generate Notes Logo">
+                    </div>
+                    Generate Notes
+                    <p class="card-para">Create comprehensive notes on any topic with AI-powered generation.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="feature-logo">
+                        <img src="{{ url_for('static', filename='images/brain.png') }}" alt="Take Quiz Logo">
+                    </div>
+                    Take Quiz
+                    <p class="card-para">Test your knowledge with AI-generated quizzes tailored to your study material.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="feature-logo">
+                        <img src="{{ url_for('static', filename='images/calendar.png') }}" alt="Study Planner Logo">
+                    </div>
+                    Study Planner
+                    <p class="card-para">Organize your study schedule and track your progress effectively.</p>
+                </div>
+                <div class="card fade-in">
+                    <div class="feature-logo">
+                        <img src="{{ url_for('static', filename='images/save.png') }}" alt="Ask Doubts Logo">
+                    </div>
+                    Saved Notes
+                    <p class="card-para">Access all your notes in one place, organized and searchable.</p>
+                </div>
+            </section>
+
+    </section>
+
+    {% if not session.get('user_id') %}
+        <section class="cta fade-in">
+            <div class="cta-box fade-in">
+                <h2>Ready to Transform Your Learning?</h2>
+                <p>
+                    Join AI Study Assistant to achieve your academic goals.
+                </p>
+                <a href="#" onclick="openModal()" class="cta-btn">
+                    Get Started Now
+                </a>
+            </div>
+        </section>        
+    {% endif %}
+    
+{% endblock %}

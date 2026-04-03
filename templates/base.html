@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %}AI Study Assistant{% endblock %} </title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div id="global-loader" class="global-loader hidden">
+        <div class="loader-box">
+            <div class="loader-spinner"></div>
+            <p id="loader-text">Loading</p>
+        </div>
+    </div>
+    <div id="page-loader" class="page-loader hidden">
+        <div class="page-loader-bar"></div>
+    </div>
+    <main>
+        <nav class="navbar fade-in">
+            {% if session.get('user_id') %}
+            <a href="/dashboard" class="logo">
+                <img src="{{ url_for('static', filename='images/logo2.png') }}" alt="AI Study Assistant Logo">
+                AI Study Assistant
+            </a>
+            {% else %}
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='images/logo2.png') }}" alt="AI Study Assistant Logo">
+                AI Study Assistant
+            </a>
+            {% endif %}
+
+            <div class="nav-links">
+                {% if session.get('user_id') %}
+                <a href="/logout" class="logout-btn">Logout</a>
+                {% else %}
+                <a href="#" onclick="openModal()" class="btn-primary">Get Started</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">
+                {{ message}}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="main">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    <footer class="fade-in">
+        &copy; 2026 AI Study Assistant
+    </footer>
+
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="modal">
+
+        <div class="modal-content">
+            <div class="logo-png">
+                <img src="{{ url_for('static', filename='images/logo2.png') }}" alt="AI Study Assistant Logo">
+            </div>
+            <span class="close" onclick="closeModal()">&times;</span>
+
+            <div class="auth-tabs">
+                <button onclick="showLogin()" id="loginTab" class="active">Login</button>
+                <button onclick="showRegister()" id="registerTab">Register</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" class="login-form" method="POST" action="/login">
+                <label for="email">Email:</label>
+                <input type="email" name="email" placeholder="Enter email" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" placeholder="Enter your password" required>
+                <div class="form-btn">
+                    <button class="btn-primary" type="submit">Login</button>
+                </div>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="registerForm" class="register-form" method="POST" action="/register" style="display:none;">
+                <label for="username">Username:</label>
+                <input type="text" name="username" placeholder="Enter your username" required>
+                <label for="email">Email:</label>
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" placeholder="Enter your password" required>
+                <div class="form-btn">
+                    <button class="btn-primary" type="submit">Register</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

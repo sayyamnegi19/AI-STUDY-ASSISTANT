@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container generate-note-container fade-in">
+
+    <a href="/dashboard" class="back-btn">&xlarr;Back</a>
+
+    <h2>Generate AI Study Notes</h2>
+
+    <!-- Generate Form -->
+    <form method="POST" class="notes-form generate-form fade-in">
+        <input type="hidden" name="action" value="generate">
+
+        <input type="text"
+               name="topic"
+               placeholder="Enter topic (e.g. Operating System)"
+               value="{{ topic or '' }}"
+               required>
+
+        <button class="btn-primary btn-loading" data-type="generate" type="submit">
+            Generate Notes
+        </button>
+    </form>
+
+
+    {% if ai_notes %}
+
+    <!-- AI Output Section -->
+    <div class="generated-output fade-in">
+
+        <h3>Generated Notes</h3>
+
+        <div class="note-preview">
+            {{ ai_notes | safe }}
+        </div>
+
+        <!-- Save Form -->
+        <form method="POST" class="save-form">
+            <input type="hidden" name="action" value="save">
+            <input type="hidden" name="topic" value="{{ topic }}">
+            <textarea name="raw_markdown_notes" hidden>{{ raw_markdown_notes }}</textarea>
+
+            <button class="btn-primary btn-loading">
+                <span class="btn-text">Save</span>
+                <span class="btn-loader"></span>
+            </button>
+        </form>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
