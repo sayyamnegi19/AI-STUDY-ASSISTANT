@@ -1,2 +1,9 @@
 flask
+flask-sqlalchemy
 gunicorn
+werkzeug
+google-generativeai
+python-dotenv
+markdown
+bleach 
+pdfplumber
