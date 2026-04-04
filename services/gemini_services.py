@@ -36,7 +36,12 @@ def generate_study_notes(topic):
         -Summary at the end
     """
 
-    response = model.generate_content(prompt)
+    response = model.generate_content(
+        prompt,
+        generation_config = {
+            "max_output_tokens":300
+        }
+    )
     return response.text
 
 def answer_doubt(question):
@@ -54,7 +59,12 @@ def answer_doubt(question):
     Question:
     {question}
     """
-    response = model.generate_content(prompt)
+    response = model.generate_content(
+        prompt,
+        generation_config = {
+            "max_output_tokens":200
+        }
+    )
     # markdown_response = markdown.markdown(
     #     response.text,
     #     extensions=["codehilite","extra","fenced_code"]
@@ -78,7 +88,12 @@ def generate_notes_from_pdf(text):
     {text[:12000]} 
     """
 
-    response = model.generate_content(prompt)
+    response = model.generate_content(
+        prompt,
+        generation_config = {
+            "max_output_tokens":300
+        }
+    )
     raw_text = response.text if response.text else ""
     clean_response = clean_content(raw_text)
 
@@ -109,7 +124,8 @@ def generate_quiz(topic):
     response = model.generate_content(
         prompt,
         generation_config={
-            "response_mime_type": "application/json"
+            "response_mime_type": "application/json",
+            "max_output_tokens":250
         }
     )
 
