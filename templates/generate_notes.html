@@ -9,6 +9,7 @@
 
     <!-- Generate Form -->
     <form method="POST" class="notes-form generate-form fade-in">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="action" value="generate">
 
         <input type="text"
@@ -36,6 +37,7 @@
 
         <!-- Save Form -->
         <form method="POST" class="save-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="topic" value="{{ topic }}">
             <textarea name="raw_markdown_notes" hidden>{{ raw_markdown_notes }}</textarea>

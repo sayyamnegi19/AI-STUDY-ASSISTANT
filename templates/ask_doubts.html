@@ -41,6 +41,8 @@
 
     <form method="POST" class="chat-input-form message-input fade-in">
 
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <textarea
             name="question"
             placeholder="Ask your question..."
