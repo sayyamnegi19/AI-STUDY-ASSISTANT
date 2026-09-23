@@ -1,4 +1,5 @@
 from flask import Flask,render_template, request, redirect, session, flash, url_for, jsonify
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.security import generate_password_hash, check_password_hash
 from services.gemini_services import generate_study_notes, clean_content, answer_doubt, generate_notes_from_pdf, generate_quiz
 from services.pdf_service import extract_text_from_pdf
@@ -10,6 +11,9 @@ import json
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+#CSRF Protection
+csrf = CSRFProtect(app)
 
 db.init_app(app)
 with app.app_context():
@@ -119,7 +123,7 @@ def update_study_time():
     return {"status": "success"}
 
 #Logout
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
     if "user_id" in session:
         user = User.query.get(session["user_id"])
@@ -312,7 +316,7 @@ def pdf_to_notes():
 def quiz():
     if "user_id" not in session:
         flash("Please Login First!", "warning")
-        redirect (url_for("index"))
+        return redirect(url_for("index"))
 
     topic = None
     score = None 
@@ -379,7 +383,7 @@ def study_planner():
     tasks = Task.query.filter_by(user_id=session["user_id"]).order_by(Task.deadline.asc()).all()
     return render_template("study_planner.html",tasks=tasks)
 
-@app.route("/task_complete/<int:task_id>")
+@app.route("/task_complete/<int:task_id>", methods=["POST"])
 def complete_task(task_id):
     task = Task.query.get_or_404(task_id)
 
@@ -390,7 +394,7 @@ def complete_task(task_id):
     db.session.commit()
     return redirect(url_for("study_planner"))
 
-@app.route("/delete_task/<int:task_id>")
+@app.route("/delete_task/<int:task_id>", methods=["POST"])
 def delete_task(task_id):
     task = Task.query.get_or_404(task_id)
 

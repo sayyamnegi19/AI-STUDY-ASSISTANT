@@ -266,6 +266,15 @@ h3 {
     /* border: none; */
 }
 
+.logout-form {
+    display: flex;
+}
+
+.logout-form .logout-btn {
+    font-family: inherit;
+    font-size: inherit;
+}
+
 .back-btn {
     display: inline-block;
     margin-bottom: 20px;
@@ -1571,6 +1580,18 @@ footer {
 .delete-btn {
     color: #dc2626;
     font-size: 16px;
+}
+
+.task-action-form {
+    display: flex;
+}
+
+.task-action-form button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
 }
 
 /* =========================

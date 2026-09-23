@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> {% block title %}AI Study Assistant{% endblock %} </title>
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -35,7 +36,10 @@
 
             <div class="nav-links">
                 {% if session.get('user_id') %}
-                <a href="/logout" class="logout-btn">Logout</a>
+                <form method="POST" action="/logout" class="logout-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
                 {% else %}
                 <a href="#" onclick="openModal()" class="btn-primary">Get Started</a>
                 {% endif %}
@@ -78,6 +82,7 @@
 
             <!-- LOGIN FORM -->
             <form id="loginForm" class="login-form" method="POST" action="/login">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <label for="email">Email:</label>
                 <input type="email" name="email" placeholder="Enter email" required>
                 <label for="password">Password:</label>
@@ -89,6 +94,7 @@
 
             <!-- REGISTER FORM -->
             <form id="registerForm" class="register-form" method="POST" action="/register" style="display:none;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <label for="username">Username:</label>
                 <input type="text" name="username" placeholder="Enter your username" required>
                 <label for="email">Email:</label>

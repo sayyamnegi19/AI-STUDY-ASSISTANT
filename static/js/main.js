@@ -60,14 +60,24 @@ if (pdfInput) {
 
 }
 
+function getCsrfToken() {
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.content : "";
+}
+
 setInterval(()=> {
     fetch("/update_study_time", {
-        method: "POST"
+        method: "POST",
+        headers: {
+            "X-CSRF-Token": getCsrfToken()
+        }
     });
 }, 6000);
 
 window.addEventListener("beforeunload", function () {
-    navigator.sendBeacon("/update_study_time");
+    const data = new URLSearchParams();
+    data.append("csrf_token", getCsrfToken());
+    navigator.sendBeacon("/update_study_time", data);
 });
 
 let loaderInterval;

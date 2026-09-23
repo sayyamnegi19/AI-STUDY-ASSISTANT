@@ -1,3 +1,5 @@
 .gitignore
 instance
 *.pyc
+.env
+.env.*

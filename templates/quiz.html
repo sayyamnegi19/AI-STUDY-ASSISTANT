@@ -17,6 +17,7 @@
 
         <form method="POST" class="quiz-topic-form">
 
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="generate">
 
             <input type="text" name="topic" placeholder="Enter topic (example: Operating System)" required>
@@ -35,6 +36,7 @@
 
     <form method="POST" class="quiz-form fade-in">
 
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="action" value="submit">
 
         {% for q in quiz_data %}
