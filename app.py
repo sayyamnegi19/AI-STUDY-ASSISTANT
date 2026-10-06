@@ -19,6 +19,10 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+#In-memory chat context per user (user_id -> list of chat turns)
+#Cleared when the Ask Doubts page is opened, so old chats are never sent
+chat_histories = {}
+
 def user_activity(user_id,activity):
     activity = Activity(
         user_id=user_id,
@@ -139,6 +143,7 @@ def logout():
         user.last_activity = None
         db.session.commit()
 
+    chat_histories.pop(session.get("user_id"), None)
     session.clear()
     flash("You have been logged out.", "info")
     return redirect(url_for("index"))
@@ -239,30 +244,38 @@ def ask_doubts():
     if "user_id" not in session:
         flash("Please Login First!", "warning")
         return redirect(url_for("index"))
-    
-    if "chat_history" not in session:
-        session["chat_history"] = []
-    
+
+    user_id = session["user_id"]
+
+    #Drop the old cookie-based history stored before this change
+    session.pop("chat_history", None)
+
+    #Opening/refreshing the page starts a new chat and forgets the previous one
+    if request.method == "GET":
+        chat_histories[user_id] = []
+
+    history = chat_histories.setdefault(user_id, [])
+
     if request.method == "POST":
         question = request.form.get("question")
 
         if question:
-            answer = answer_doubt(question)
+            raw_answer = answer_doubt(question, history)
             answer_markdown = markdown.markdown(
-                answer,
+                raw_answer,
                 extensions=["codehilite","extra","fenced_code"]
             )
             clean_answer = clean_content(answer_markdown)
-            session["chat_history"].append({
+            history.append({
                 "question": question,
-                "answer": clean_answer
+                "answer": clean_answer,
+                "raw_answer": raw_answer
             })
-            session.modified = True
-            user_activity(session["user_id"], f"Asked Doubt: {question[:30]}...")
+            user_activity(user_id, f"Asked Doubt: {question[:30]}...")
 
     return render_template(
         "ask_doubts.html",
-        chat_history = session["chat_history"]
+        chat_history = history
     )
 
 #PDF To Notes

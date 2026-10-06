@@ -7,7 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 ai_model = os.getenv("AI_MODEL")
+chat_model_name = os.getenv("CHAT_MODEL", "gemini-flash-lite-latest")
 model = genai.GenerativeModel(ai_model)
+#Fast model for interactive features (ask doubts, quiz)
+chat_model = genai.GenerativeModel(chat_model_name)
 
 def clean_content(content):
     clean_formatted_response = bleach.clean(
@@ -39,7 +42,24 @@ def generate_study_notes(topic):
     response = model.generate_content(prompt)
     return response.text
 
-def answer_doubt(question):
+MAX_CONTEXT_TURNS = 6
+
+def answer_doubt(question, history=None):
+    history = history or []
+
+    contents = []
+
+    #Previous turns of the current chat only (old chats are never kept)
+    for chat in history[-MAX_CONTEXT_TURNS:]:
+        contents.append({
+            "role": "user",
+            "parts": [chat["question"]]
+        })
+        contents.append({
+            "role": "model",
+            "parts": [chat["raw_answer"]]
+        })
+
     prompt = f"""
     You are a helpful AI tutor.
 
@@ -54,12 +74,12 @@ def answer_doubt(question):
     Question:
     {question}
     """
-    response = model.generate_content(prompt)
-    # markdown_response = markdown.markdown(
-    #     response.text,
-    #     extensions=["codehilite","extra","fenced_code"]
-    # )
-    # cleaned_response = clean_content(markdown_response)
+    contents.append({
+        "role": "user",
+        "parts": [prompt]
+    })
+
+    response = chat_model.generate_content(contents)
 
     return response.text
 
@@ -106,7 +126,7 @@ def generate_quiz(topic):
     Return only valid JSON.
     """
 
-    response = model.generate_content(
+    response = chat_model.generate_content(
         prompt,
         generation_config={
             "response_mime_type": "application/json"
